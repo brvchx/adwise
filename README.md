@@ -1,70 +1,69 @@
-# Сайт AdWise — поддержка, политика, условия
+# AdWise — support, privacy and terms
 
-Три статические страницы для App Store Connect. Ничего, кроме HTML и CSS, — работает
-вечно, обновлять нечего.
+Three static pages linked from App Store Connect. Plain HTML and CSS, nothing to build
+and nothing to maintain.
 
 ```
-index.html     поддержка (Support URL)
-privacy.html   политика конфиденциальности (Privacy Policy URL)
-terms.html     условия использования (License Agreement / EULA)
-style.css      оформление, светлая и тёмная тема
+index.html     Support page      → App Store Connect "Support URL"
+privacy.html   Privacy Policy    → App Store Connect "Privacy Policy URL"
+terms.html     Terms of Use      → App Store Connect "License Agreement"
+style.css      Styling, light and dark theme
 ```
 
-## Зачем свой хостинг
+## Why self-hosted
 
-Приложение сняли по гайдлайну 1.5 из-за того, что `appadblocker.com` перестал отвечать,
-а он стоял в поле Support URL. Политика сейчас лежит на `freeprivacypolicy.com` — тот же
-риск: чужой сервис, чужой аккаунт, чужие сроки. GitHub Pages бесплатен, ссылки не
-меняются и отключить их может только владелец репозитория.
+The app was removed under App Review Guideline 1.5 because the domain in the Support URL
+field stopped responding. The privacy policy used to live on a third-party generator
+site — the same risk: someone else's service, someone else's account, someone else's
+uptime. Hosting the pages ourselves removes that whole class of failure.
 
-## Как выложить
+## Deploying
 
-**1. Создать репозиторий.** На github.com → New repository → имя `adwise`, тип
-**Public** (для бесплатного Pages это обязательно), без README.
+**1. Enable Pages.** Repository → Settings → Pages → Source: **Deploy from a branch** →
+Branch `main`, folder `/ (root)` → Save. The address appears at the top after a minute
+or two.
 
-**2. Залить файлы.** На странице пустого репозитория → `uploading an existing file` →
-перетащить все четыре файла из этой папки → Commit changes.
+> GitHub Pages only serves from a **public** repository on the free plan. If the
+> repository is private, Pages is switched off and the links stop working. Either keep
+> the repository public, upgrade to GitHub Pro, or host the same files on Cloudflare
+> Pages or Netlify, both of which serve public sites from private repositories for free.
 
-**3. Включить Pages.** Settings → Pages → Source: **Deploy from a branch** → Branch:
-`main`, папка `/ (root)` → Save. Через пару минут вверху появится адрес.
+**2. Verify.** Open all three URLs and check that they load and link to each other.
 
-**4. Проверить.** Открыть все три ссылки, убедиться, что страницы грузятся и переходы
-между ними работают.
+**3. Fill in App Store Connect.**
 
-**5. Прописать в App Store Connect.**
-
-| Поле | Где в ASC | Ссылка |
+| Field | Where in ASC | URL |
 |---|---|---|
-| Support URL | версия приложения → URL-адрес службы поддержки | `.../index.html` |
-| Privacy Policy URL | App Information → Конфиденциальность | `.../privacy.html` |
+| Support URL | App version page | `.../` |
+| Privacy Policy URL | App Information → App Privacy | `.../privacy.html` |
 | License Agreement | App Information → License Agreement → Custom | `.../terms.html` |
 
-**6. Обновить ссылки в приложении** — в `Constants.swift` заменить адреса
-`freeprivacypolicy.com` на новые, чтобы кнопки внутри приложения вели туда же.
+**4. Keep the app in sync.** `Constants.swift` in the iOS project points at these same
+pages. If the addresses change, update it there too.
 
-Адреса будут вида `https://<логин>.github.io/adwise/privacy.html`.
+## Things to check before shipping
 
-## Что нужно поменять в тексте под себя
+- **The email address** `adblockdev@outlook.com` appears on all three pages. Make sure
+  somebody actually reads that mailbox — an App Review specialist may write to it. A dead
+  support address is exactly what caused the 1.5 removal.
+- **The promised response time** on the support page is 48 hours. Only promise what can
+  be met.
+- **Jurisdiction** in the Terms is Latvia, matching where ASKOR SIA is registered.
 
-- **Почта `adblockdev@outlook.com`** встречается на всех трёх страницах. Убедитесь, что
-  ящик рабочий и его кто-то читает: ревьюер может написать на него. Если почта другая —
-  заменить во всех файлах.
-- **Срок ответа** на странице поддержки указан «в течение 48 часов». Если реально
-  дольше — поправить, обещание должно быть выполнимым.
-- **Юрисдикция** в условиях указана как Латвия, по месту регистрации ASKOR SIA.
+## What the texts already cover
 
-## Что учтено в текстах
+The privacy policy is written against the specific rules that cause rejections:
 
-Политика написана под конкретные требования, из-за которых обычно отказывают:
+- **Guideline 5.4 (VPN apps)** — states plainly what is collected on connection, that no
+  connection logs are kept, and that data is never sold or shared. VPN apps do not pass
+  review without this.
+- **Guideline 3.1.2** — auto-renewing subscriptions, cancellation and refunds.
+- **Tracking and IDFA** — describes the ATT prompt and confirms the app works identically
+  if tracking is declined.
+- **Processor list** — Firebase, AppsFlyer, Apphud, Branch, Apple, DigitalOcean, each
+  with a link to its own policy. This list must match the App Privacy questionnaire in
+  App Store Connect exactly.
+- **GDPR** — user rights and how to exercise them.
 
-- **Правило 5.4 для VPN-приложений** — прямо сказано, какие данные собираются при
-  подключении, что логи не ведутся и что данные не продаются. Без этого VPN не пропускают.
-- **Правило 3.1.2** — раздел про автопродление подписок, отмену и возвраты.
-- **Трекинг и IDFA** — описан системный запрос ATT и что при отказе приложение работает
-  так же.
-- **Список обработчиков** — Firebase, AppsFlyer, Apphud, Apple, DigitalOcean, с ссылками
-  на их политики. Он должен совпадать с анкетой App Privacy в App Store Connect.
-- **GDPR** — права пользователя и порядок обращения.
-
-**Важно:** Яндекс Метрика из приложения удалена, поэтому в политике её нет. Branch,
-AppsFlyer и Apphud остаются — все трое перечислены в разделе 7 и в таблице данных.
+Yandex Metrica was removed from the app, so it is not listed. Branch, AppsFlyer and
+Apphud remain and are listed in section 7 and in the data table.
