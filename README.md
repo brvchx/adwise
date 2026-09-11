@@ -6,7 +6,7 @@ and nothing to maintain.
 ```
 index.html     Support page      → App Store Connect "Support URL"
 privacy.html   Privacy Policy    → App Store Connect "Privacy Policy URL"
-terms.html     Terms of Use      → App Store Connect "License Agreement"
+terms.html     Terms of Use      → linked from the description and the paywalls
 style.css      Styling, light and dark theme
 ```
 
@@ -36,7 +36,7 @@ or two.
 |---|---|---|
 | Support URL | App version page | `.../` |
 | Privacy Policy URL | App Information → App Privacy | `.../privacy.html` |
-| License Agreement | App Information → License Agreement → Custom | `.../terms.html` |
+| License Agreement | App Information → License Agreement | keep Apple's **Standard EULA** — the field takes full text, not a URL; the Terms link in the description and paywalls covers guideline 3.1.2 |
 
 **4. Keep the app in sync.** `Constants.swift` in the iOS project points at these same
 pages. If the addresses change, update it there too.
